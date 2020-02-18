@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 {
-  # NixOS wants to enable GRUB by default
+  # NixOS wants to enable GRUB by default, but we use u-boot on rpi
   boot.loader.grub.enable = false;
 
   # if you have a Raspberry Pi 2 or 3, pick this:
@@ -18,14 +18,13 @@
     raspberrypi-tools
   ];
 
-  # Preserve space by sacrificing documentation and history
-  #services.nixosManual.enable = false;
+  # Preserve space by deleting generations older than 60d
   nix.gc.automatic = true;
   nix.gc.options = "--delete-older-than 60d";
-  #boot.cleanTmpDir = true;
 
   # Configure basic SSH access
   services.openssh.enable = true;
+  # Allow root ssh login
   services.openssh.permitRootLogin = "yes";
 
 }
